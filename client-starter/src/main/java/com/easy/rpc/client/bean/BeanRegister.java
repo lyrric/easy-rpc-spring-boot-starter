@@ -24,12 +24,10 @@ import java.util.Set;
 @Component
 public class BeanRegister implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
 
-    private final RpcInvocationHandler rpcInvocationHandler = new RpcInvocationHandler();
+    /**
+     * 获取环境，读取配置
+     */
     private Environment environment;
-
-    public BeanRegister() {
-        System.out.println("BeanRegister init");
-    }
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
@@ -43,6 +41,7 @@ public class BeanRegister implements BeanDefinitionRegistryPostProcessor, Enviro
      */
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        final RpcInvocationHandler rpcInvocationHandler = new RpcInvocationHandler();
         log.info("注册service bean开始");
         String basePackage = environment.getProperty("rpc.base-package");
         if(!"".equals(basePackage)){

@@ -1,21 +1,15 @@
 package com.easy.rpc.client.util;
 
-import com.easy.rpc.common.RpcApi;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
-import org.springframework.core.type.classreading.MetadataReader;
-import org.springframework.core.type.classreading.MetadataReaderFactory;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.core.type.filter.TypeFilter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created on 2018/10/17.
@@ -41,6 +35,11 @@ class ClassScanProvider extends ClassPathScanningCandidateComponentProvider {
         super(false);
     }
 
+    /**
+     * 返回指定包下所有的class
+     * @param basePackage 包路径
+     * @return
+     */
     Set<Class<?>> scanAllClass(String basePackage) {
         String resourcePattern =  "**/*.class";
         Set<Class<?>> classes = new LinkedHashSet<>();

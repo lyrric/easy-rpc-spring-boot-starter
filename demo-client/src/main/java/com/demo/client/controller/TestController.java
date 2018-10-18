@@ -18,10 +18,8 @@ import javax.annotation.Resource;
 public class TestController {
 
     @Resource
-    private RpcClientProperties rpcClientProperties;
-
-    @Resource
     private UserService userService;
+
 
     public TestController() {
         System.out.println("TestController init");
