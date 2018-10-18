@@ -34,5 +34,6 @@ public class SyncFutureMgr {
         SyncResFuture future = dataMap.get(requestId);
         if(future == null) return;
         future.setResponse(rpcResponse);
+        dataMap.remove(requestId);
     }
 }

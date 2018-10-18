@@ -30,7 +30,6 @@ public class RpcInvocationHandler implements InvocationHandler{
         rpcRequest.setParameters(args);
         rpcRequest.setParameterTypes(method.getParameterTypes());
         rpcRequest.setRequestTime(System.currentTimeMillis());
-        System.out.println(rpcRequest);
         NettyService.sendAndFlush(rpcRequest);
         //保存请求
         SyncResFuture future = new SyncResFuture();

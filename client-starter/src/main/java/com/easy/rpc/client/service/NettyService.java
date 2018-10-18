@@ -15,8 +15,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.apachecommons.CommonsLog;
 
-import java.util.Properties;
-
 
 /**
  * Created on 2018/10/18.
@@ -59,6 +57,7 @@ public class NettyService {
      * @return
      */
     public static void sendAndFlush(RpcRequest rpcRequest){
+        log.info("发送消息||"+rpcRequest.getRequestId()+"||"+rpcRequest.getClassName()+"||"+rpcRequest.getMethodName());
         socketChannel.writeAndFlush(rpcRequest);
     }
 }
