@@ -11,5 +11,6 @@
 
 	<artifactId>demo-api</artifactId>
 
-
+	<dependencies>
+	</dependencies>
 </project>

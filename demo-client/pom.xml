@@ -23,5 +23,10 @@
 			<artifactId>spring-boot-starter-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.easy.rpc</groupId>
+			<artifactId>demo-api</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

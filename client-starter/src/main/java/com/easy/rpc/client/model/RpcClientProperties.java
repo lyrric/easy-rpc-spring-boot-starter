@@ -1,8 +1,6 @@
 package com.easy.rpc.client.model;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * Created on 2018/10/17.
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Component;
  */
 @ConfigurationProperties(prefix = "rpc")
 public class RpcClientProperties {
-
     /**
      * server端口
      */
@@ -24,10 +21,8 @@ public class RpcClientProperties {
      * 接口路径
      */
     private String basePackage;
-    /**
-     * test
-     */
-    private String str;
+
+
 
     public RpcClientProperties() {
         System.out.println("RpcClientProperties init");
@@ -57,11 +52,6 @@ public class RpcClientProperties {
         this.basePackage = basePackage;
     }
 
-    public String getStr() {
-        return str;
-    }
 
-    public void setStr(String str) {
-        this.str = str;
-    }
+
 }

@@ -8,7 +8,6 @@ import com.demo.api.model.User;
  * 测试一下,你就知道
  * @author wangxiaodong
  */
-
 public interface UserService {
 
     User findById(Integer id);

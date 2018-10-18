@@ -1,8 +1,12 @@
 package com.easy.rpc.client.proxy;
 
 
+import com.easy.rpc.client.bean.BeanRegister;
+import com.easy.rpc.client.model.RpcClientProperties;
 import com.easy.rpc.common.model.RpcRequest;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -16,16 +20,7 @@ import java.util.UUID;
  * 动态代理，发送请求
  * @author wangxiaodong
  */
-@Component
-public class RpcInvocationHandler implements InvocationHandler {
-
-//    @Resource
-//    private SocketChannel socketChannel;
-
-
-    public RpcInvocationHandler() {
-        System.out.println("RpcInvocationHandler init");
-    }
+public class RpcInvocationHandler implements InvocationHandler, InitializingBean{
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -58,5 +53,15 @@ public class RpcInvocationHandler implements InvocationHandler {
 //        //返回数据
 //        return future.getResponse().getData();
         return null;
+    }
+
+    /**
+     * 注入完成再扫描注册bean
+     * @throws Exception
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("afterPropertiesSet");
+//        beanRegister.registerBean(rpcClientProperties, this);
     }
 }
