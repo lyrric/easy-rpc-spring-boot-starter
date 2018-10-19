@@ -1,4 +1,4 @@
-package com.easy.rpc.common;
+package com.easy.rpc.common.annotation;
 
 /**
  * Created on 2018/10/18.

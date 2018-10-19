@@ -12,6 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoClientApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoClientApp.class, args).getEnvironment();
+        SpringApplication.run(DemoClientApp.class, args);
     }
 }

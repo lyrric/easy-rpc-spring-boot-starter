@@ -21,15 +21,15 @@ import javax.annotation.Resource;
 @CommonsLog
 public class RpcClientConfiguration {
 
+    @Resource
+    private RpcClientProperties rpcClientProperties;
     /**
      * 初始化netty
-     * @param rpcClientProperties
      * @return
      * @throws InterruptedException
      */
     @PostConstruct
-    @Resource
-    public void initNetty(RpcClientProperties rpcClientProperties) throws InterruptedException {
+    public void initNetty() throws InterruptedException {
         NettyService.init(rpcClientProperties);
     }
 
