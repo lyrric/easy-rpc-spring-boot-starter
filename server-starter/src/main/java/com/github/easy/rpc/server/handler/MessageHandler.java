@@ -2,6 +2,7 @@ package com.github.easy.rpc.server.handler;
 
 import com.github.easy.rpc.common.model.RpcRequest;
 import com.github.easy.rpc.common.model.RpcResponse;
+import com.github.easy.rpc.server.annotation.RpcService;
 import com.github.easy.rpc.server.cache.RpcCache;
 import com.github.easy.rpc.server.model.RpcServerProperties;
 import io.netty.channel.ChannelHandler;
@@ -15,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 
 /**
  * Created on 2018/10/13.
@@ -43,6 +45,10 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         super.channelRead(ctx, msg);
         RpcRequest rpcRequest = (RpcRequest)msg;
+        if(new Random().nextBoolean()){
+            log.info(rpcRequest.getRequestId()+", 被抛弃");
+            return ;
+        }
         RpcResponse rpcResponse = handle(rpcRequest);
         if(rpcResponse != null){
             //缓存起来
@@ -60,7 +66,7 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         //super.exceptionCaught(ctx, cause);
-        cause.printStackTrace();
+        //cause.printStackTrace();
         log.info("一个连接关闭了");
     }
 
@@ -71,7 +77,7 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
     private RpcResponse handle(RpcRequest rpcRequest){
         RpcResponse rpcResponse;
         //请求时间据现在已经超过了有效期，返回null
-        if(System.currentTimeMillis() > rpcRequest.getRequestTime()+rpcServerProperties.getRequestExpiry()*1000){
+        if(System.currentTimeMillis() > rpcRequest.getRequestTime()+rpcServerProperties.getRequestTimeout()*1000){
             return new RpcResponse(rpcRequest.getRequestId(), false, "请求超时", null);
         }
         //如果请求已经被执行过了，且缓存还在，则返回缓存中的数据
@@ -83,6 +89,9 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
         try {
             //获取对应类的实例
             Object serviceBean = getBean(clazzName);
+            if(serviceBean == null ){
+                return new RpcResponse(rpcRequest.getRequestId(), false, "服务不存在", null);
+            }
             //反射，执行方法
             FastClass fastClass = FastClass.create(serviceBean.getClass());
             FastMethod fastMethod = fastClass.getMethod(methodName, rpcRequest.getParameterTypes());
@@ -96,13 +105,14 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 获取实例
+     * 获取实例,并判断是否带有@RpcService注解
      * @param className
      * @return
      * @throws ClassNotFoundException
      */
     private Object getBean(String className) throws ClassNotFoundException {
         Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
-        return applicationContext.getBean(clazz);
+        Object object = applicationContext.getBean(clazz);
+        return object.getClass().isAnnotationPresent(RpcService.class)?object:null;
     }
 }

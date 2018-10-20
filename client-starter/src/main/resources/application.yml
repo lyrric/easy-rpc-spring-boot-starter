@@ -1,6 +1,0 @@
-rpc:
-  server-host: 127.0.0.1
-  base-package: com.demo.api.service
-  server-port: 9898
-
-

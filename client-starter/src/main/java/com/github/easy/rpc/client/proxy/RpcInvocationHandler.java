@@ -6,6 +6,7 @@ import com.github.easy.rpc.client.SyncFutureMgr;
 import com.github.easy.rpc.client.model.SyncResFuture;
 import com.github.easy.rpc.common.model.RpcRequest;
 
+import javax.annotation.Resource;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class RpcInvocationHandler implements InvocationHandler{
         rpcRequest.setRequestTime(System.currentTimeMillis());
         NettyService.sendAndFlush(rpcRequest);
         //保存请求
-        SyncResFuture future = new SyncResFuture();
+        SyncResFuture future = new SyncResFuture(rpcRequest);
         SyncFutureMgr.put(rpcRequest.getRequestId(), future);
         //返回数据
         return future.getResponse().getData();

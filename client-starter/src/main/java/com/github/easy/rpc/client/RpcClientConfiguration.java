@@ -6,6 +6,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
 @Configuration
 @EnableConfigurationProperties(RpcClientProperties.class)
 @ComponentScan(basePackages = "com.github.easy.rpc.client")
+@EnableScheduling
 @CommonsLog
 public class RpcClientConfiguration {
 

@@ -2,6 +2,7 @@ package com.demo.server.service;
 
 import com.demo.api.model.User;
 import com.demo.api.service.UserService;
+import com.github.easy.rpc.server.annotation.RpcService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
  * @author wangxiaodong
  */
 @Service
+@RpcService
 public class UserServiceImpl implements UserService {
 
     @Override

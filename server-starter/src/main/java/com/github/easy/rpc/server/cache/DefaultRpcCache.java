@@ -3,6 +3,7 @@ package com.github.easy.rpc.server.cache;
 import com.github.easy.rpc.common.model.RpcResponse;
 import com.github.easy.rpc.server.model.RpcServerProperties;
 import lombok.extern.apachecommons.CommonsLog;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -20,7 +21,7 @@ public class DefaultRpcCache implements RpcCache{
     @Resource
     private RpcServerProperties rpcServerProperties;
 
-    private ConcurrentHashMap<Object, Object> dataMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Object> dataMap = new ConcurrentHashMap<>();
 
     @Override
     public Object getObject(String key) {
@@ -43,7 +44,7 @@ public class DefaultRpcCache implements RpcCache{
     }
 
     /**
-     * 检查数据是否存在并且有效，存在有效则返回，无效删除切返回null
+     * 检查数据是否存在并且有效，存在有效则返回，无效删除且返回null
      * @param key
      * @return
      */
@@ -53,11 +54,25 @@ public class DefaultRpcCache implements RpcCache{
             return null;
         }
         //当前数据已过期，删除数据,返回null
-        if(System.currentTimeMillis() > rpcResponse.getResponseTime() + rpcServerProperties.getResponseExpiry()*1000){
+        if(System.currentTimeMillis() > rpcResponse.getResponseTime() + rpcServerProperties.getResponseCacheExpiry()*1000){
             log.info("数据已过期,requestId="+rpcResponse.getRequestId());
             dataMap.remove(key);
             return null;
         }
         return rpcResponse;
+    }
+
+    /**
+     * 定时任务，设置任务超时，并清除dataMap中过时的数据
+     * 每隔三十秒执行一次
+     */
+    @Scheduled(cron = "10/30 * * * * ? ")
+    public void scanData(){
+        dataMap.forEach((key,value)->{
+            if(System.currentTimeMillis() > ((RpcResponse)value).getResponseTime() + rpcServerProperties.getResponseCacheExpiry()*1000){
+                log.debug("缓存数据已过期,requestId=" + ((RpcResponse)value).getRequestId());
+                dataMap.remove(key);
+            }
+        });
     }
 }

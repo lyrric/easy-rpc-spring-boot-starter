@@ -1,6 +1,7 @@
 package com.github.easy.rpc.common.model;
 
 import com.github.easy.rpc.common.exception.RequestFailException;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -84,5 +85,16 @@ public class RpcResponse implements Serializable {
 
     public void setResponseTime(Long responseTime) {
         this.responseTime = responseTime;
+    }
+
+    @Override
+    public String toString() {
+        return "RpcResponse{" +
+                "requestId='" + requestId + '\'' +
+                ", success=" + success +
+                ", errMsg='" + errMsg + '\'' +
+                ", data=" + data +
+                ", responseTime=" + responseTime +
+                '}';
     }
 }

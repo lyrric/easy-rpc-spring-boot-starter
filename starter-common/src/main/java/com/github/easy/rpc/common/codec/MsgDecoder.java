@@ -24,7 +24,6 @@ public class MsgDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        log.info("消息解码");
         //判断消息头是否传送完毕
         if(in.readableBytes() < HEAD_LENGTH){
             return;
@@ -47,5 +46,6 @@ public class MsgDecoder extends ByteToMessageDecoder {
         ObjectInputStream ois = new ObjectInputStream(bis);
         Object object = ois.readObject();
         out.add(object);
+        log.info("消息解码||"+object);
     }
 }

@@ -1,7 +1,7 @@
 rpc:
   server:
     port: 9898
-    request-expiry: 60
-    response-expiry: 60
+    request-timeout: 60
+    response-cache-expiry: 60
 server:
   port: 8080

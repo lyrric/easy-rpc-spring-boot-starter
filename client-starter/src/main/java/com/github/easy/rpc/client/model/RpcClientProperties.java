@@ -1,5 +1,6 @@
 package com.github.easy.rpc.client.model;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -8,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author wangxiaodong
  */
 @ConfigurationProperties(prefix = "rpc")
+@Data
 public class RpcClientProperties {
     /**
      * server端口
@@ -21,36 +23,12 @@ public class RpcClientProperties {
      * 接口路径
      */
     private String basePackage;
+    /**
+     * 超时设置
+     */
+    private Integer requestTimeout;
 
 
-
-    public RpcClientProperties() {
-        System.out.println("RpcClientProperties init");
-    }
-
-    public String getServerHost() {
-        return serverHost;
-    }
-
-    public void setServerHost(String serverHost) {
-        this.serverHost = serverHost;
-    }
-
-    public Integer getServerPort() {
-        return serverPort;
-    }
-
-    public void setServerPort(Integer serverPort) {
-        this.serverPort = serverPort;
-    }
-
-    public String getBasePackage() {
-        return basePackage;
-    }
-
-    public void setBasePackage(String basePackage) {
-        this.basePackage = basePackage;
-    }
 
 
 

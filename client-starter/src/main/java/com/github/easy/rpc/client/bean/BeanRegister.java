@@ -1,5 +1,6 @@
 package com.github.easy.rpc.client.bean;
 
+import com.github.easy.rpc.client.SyncFutureMgr;
 import com.github.easy.rpc.client.proxy.RpcInvocationHandler;
 import com.github.easy.rpc.client.util.ClassUtil;
 import lombok.extern.apachecommons.CommonsLog;
@@ -59,5 +60,6 @@ public class BeanRegister implements BeanDefinitionRegistryPostProcessor, Enviro
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+        SyncFutureMgr.setRequestTimeout(environment);
     }
 }
