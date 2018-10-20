@@ -4,19 +4,12 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>spring-boot-starter</artifactId>
-		<groupId>com.github.lyrric</groupId>
+		<groupId>com.easy.rpc</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>rpc-starter-common</artifactId>
+	<artifactId>client-test</artifactId>
 
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>4.1.30.Final</version>
-		</dependency>
-	</dependencies>
+
 </project>

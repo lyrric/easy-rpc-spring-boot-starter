@@ -20,7 +20,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.github.lyrric</groupId>
-			<artifactId>spring-boot-starter-client</artifactId>
+			<artifactId>spring-boot-starter-rpc-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
