@@ -52,7 +52,7 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
         RpcResponse rpcResponse = handle(rpcRequest);
         if(rpcResponse != null){
             //缓存起来
-            rpcCache.putObject(rpcRequest.getRequestId(), rpcResponse);
+            rpcCache.putObject(rpcRequest.getRequestId(), rpcResponse,rpcServerProperties.getResponseCacheExpiry());
             ctx.channel().writeAndFlush(rpcResponse);
         }
 

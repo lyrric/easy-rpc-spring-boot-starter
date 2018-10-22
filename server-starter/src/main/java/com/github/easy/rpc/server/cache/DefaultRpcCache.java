@@ -1,12 +1,9 @@
 package com.github.easy.rpc.server.cache;
 
 import com.github.easy.rpc.common.model.RpcResponse;
-import com.github.easy.rpc.server.model.RpcServerProperties;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,14 +11,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * 默认缓存
  * @author wangxiaodong
  */
-@Component
 @CommonsLog
 public class DefaultRpcCache implements RpcCache{
 
-    @Resource
-    private RpcServerProperties rpcServerProperties;
+    private Integer expiry = null;
 
     private ConcurrentHashMap<String, Object> dataMap = new ConcurrentHashMap<>();
+
+    public DefaultRpcCache() {
+        System.out.println("DefaultRpcCache init");
+    }
 
     @Override
     public Object getObject(String key) {
@@ -29,7 +28,10 @@ public class DefaultRpcCache implements RpcCache{
     }
 
     @Override
-    public void putObject(String key, Object value) {
+    public void putObject(String key, Object value, int expiry) {
+        if(this.expiry == null){
+            this.expiry = expiry;
+        }
         dataMap.put(key, value);
     }
 
@@ -54,7 +56,7 @@ public class DefaultRpcCache implements RpcCache{
             return null;
         }
         //当前数据已过期，删除数据,返回null
-        if(System.currentTimeMillis() > rpcResponse.getResponseTime() + rpcServerProperties.getResponseCacheExpiry()*1000){
+        if(System.currentTimeMillis() > rpcResponse.getResponseTime() +expiry*1000){
             log.info("数据已过期,requestId="+rpcResponse.getRequestId());
             dataMap.remove(key);
             return null;
@@ -69,7 +71,7 @@ public class DefaultRpcCache implements RpcCache{
     @Scheduled(cron = "10/30 * * * * ? ")
     public void scanData(){
         dataMap.forEach((key,value)->{
-            if(System.currentTimeMillis() > ((RpcResponse)value).getResponseTime() + rpcServerProperties.getResponseCacheExpiry()*1000){
+            if(System.currentTimeMillis() > ((RpcResponse)value).getResponseTime() + expiry*1000){
                 log.debug("缓存数据已过期,requestId=" + ((RpcResponse)value).getRequestId());
                 dataMap.remove(key);
             }
