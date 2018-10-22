@@ -13,6 +13,7 @@ public interface UserService {
 }
 ```
 ### 2.单独把接口封装在一个模块中，服务端和客户端依赖于该模块（或者jar包）
+
 ### 3.服务端添加依赖
 ```
 <dependency>
