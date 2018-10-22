@@ -13,7 +13,6 @@ public interface UserService {
 }
 ```
 ### 2.单独把接口封装在一个模块中，服务端和客户端依赖于该模块（或者jar包）
-
 ### 3.服务端添加依赖
 ```
 <dependency>
@@ -36,7 +35,14 @@ public class UserServiceImpl implements UserService {
     }
 }
 ```
-### 5.客户端（请求端）添加依赖
+### 5.服务端配置rpc端口
+```
+rpc:
+  server:
+    port: 9898 #rpc端口
+}
+```
+### 6.客户端（请求端）添加依赖
 ```
 <dependency>
 	<groupId>com.github.lyrric</groupId>
@@ -44,15 +50,14 @@ public class UserServiceImpl implements UserService {
 	<version>1.0-SNAPSHOT</version>
 </dependency>
 ```
-### 6.配置接口路径和rpc服务端IP和端口
+### 7.客户端配置接口路径和rpc服务端IP和端口
 ```
     rpc:
         server-host: 127.0.0.1
         base-package: com.demo.api.service
         server-port: 9898
-        request-timeout: 20
  ```
-### 7.在Controller或者Service中注入
+### 8.在Controller或者Service中注入
 ```
 @Resource
 private UserService userService;
