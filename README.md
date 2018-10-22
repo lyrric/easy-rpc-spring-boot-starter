@@ -64,7 +64,7 @@ private UserService userService;
 ```
 ## 注意事项
 
- 1. 服务端和请求的接口UserService要位于同一个包路径下面，否者服务端根据类的全局限定名无法找到spring中的bean
+ 1. 服务端和请求端的接口UserService要位于同一个包路径下面，否者服务端根据类的全局限定名无法找到spring中的bean
 
 ## 配置说明
 ### 客户端配置
