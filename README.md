@@ -9,6 +9,8 @@ easy-rpc-spring-boot-starter
 ## 更多信息请查看
 -->https://github.com/lyrric/easy-rpc-spring-boot-starter/wiki
 
+
+## 快速开始
 ### 1.写一个接口类充当rpc接口
 ```
 public interface UserService {
@@ -69,21 +71,4 @@ private UserService userService;
 
  1. 服务端和请求端的接口UserService要位于同一个包路径下面，否者服务端根据类的全局限定名无法找到spring中的bean
 
-## 配置说明
-### 客户端配置
-```
-rpc:
-  server-host: 127.0.0.1 #服务端地址
-  server-port: 9898 #服务端rpc端口
-  base-package: com.demo.api.service #接口的包名路径
-  request-timeout: 20 #等待返回结果超时设置，单位秒
-```
-### 服务端配置
-```
-rpc:
-  server:
-    port: 9898 #rpc端口
-    request-timeout: 60 #超时设置(请求发送的和现在的时间差大于此值时不做任何处理)，单位秒，默认为一分钟
-    response-cache-expiry: 60 #返回结果的缓存时间(缓存时间内收到同样的requestId将会直接返回缓存中的值)，单位秒，默认为一分钟
-```
 ### 然后尽情的使用吧
