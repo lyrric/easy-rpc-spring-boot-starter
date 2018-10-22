@@ -4,7 +4,6 @@ import com.github.easy.rpc.client.model.SyncResFuture;
 import com.github.easy.rpc.common.model.RpcResponse;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,15 +18,15 @@ public class SyncFutureMgr {
     /**
      * 超时时间
      */
-    private static Integer requestTimeout = 30;
-    private static ConcurrentHashMap<String, SyncResFuture> dataMap = new ConcurrentHashMap<>();
+    private Integer requestTimeout = 30;
+    private ConcurrentHashMap<String, SyncResFuture> dataMap = new ConcurrentHashMap<>();
 
     /**
      * 放入待响应的请求
      * @param requestId
      * @param resFuture
      */
-    public static void put(String requestId, SyncResFuture resFuture){
+    public void put(String requestId, SyncResFuture resFuture){
         dataMap.put(requestId, resFuture);
     }
 
@@ -35,7 +34,7 @@ public class SyncFutureMgr {
      * 设置数据，尝试唤醒等待中的线程
      * @param rpcResponse
      */
-    public static void release(RpcResponse rpcResponse){
+    public void release(RpcResponse rpcResponse){
         String requestId = rpcResponse.getRequestId();
         if(requestId == null || "".equals(requestId)){ return;}
         SyncResFuture future = dataMap.get(requestId);
@@ -47,7 +46,7 @@ public class SyncFutureMgr {
      * 定时任务，设置任务超时
      * 每隔三十秒执行一次
      */
-    public static void scanData(){
+    public void scanData(){
         RpcResponse rpcResponse = new RpcResponse();
         rpcResponse.setSuccess(false);
         rpcResponse.setErrMsg("等待返回数据超时");
@@ -61,7 +60,7 @@ public class SyncFutureMgr {
         });
     }
 
-    public static void setRequestTimeout(Environment environment) {
+    public void setRequestTimeout(Environment environment) {
         String str = environment.getProperty("rpc.request-timeout");
         if("".equals(str)){
             requestTimeout = Integer.valueOf(str);

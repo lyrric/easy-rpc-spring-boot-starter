@@ -14,6 +14,11 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 @ChannelHandler.Sharable
 public class MessageHandler extends ChannelInboundHandlerAdapter {
 
+    private SyncFutureMgr syncFutureMgr;
+
+    public MessageHandler(SyncFutureMgr syncFutureMgr) {
+        this.syncFutureMgr = syncFutureMgr;
+    }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
@@ -28,7 +33,7 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         super.channelRead(ctx, msg);
         RpcResponse rpcResponse = (RpcResponse)msg;
-        SyncFutureMgr.release(rpcResponse);
+        syncFutureMgr.release(rpcResponse);
     }
 
     @Override
@@ -40,4 +45,6 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
     }
+
+
 }

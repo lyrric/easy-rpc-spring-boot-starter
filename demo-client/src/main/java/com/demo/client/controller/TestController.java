@@ -17,11 +17,6 @@ public class TestController {
     @Resource
     private UserService userService;
 
-
-    public TestController() {
-        System.out.println("TestController init");
-    }
-
     @GetMapping(value = "/test")
     public String test(){
         return userService.findById(1).toString();

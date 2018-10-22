@@ -1,7 +1,9 @@
 package com.github.easy.rpc.client.bean;
 
 import com.github.easy.rpc.client.SyncFutureMgr;
+import com.github.easy.rpc.client.handler.MessageHandler;
 import com.github.easy.rpc.client.proxy.RpcInvocationHandler;
+import com.github.easy.rpc.client.service.NettyService;
 import com.github.easy.rpc.client.util.ClassUtil;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.BeansException;
@@ -35,13 +37,22 @@ public class BeanRegister implements BeanDefinitionRegistryPostProcessor, Enviro
     }
 
     /**
-     * 这里不能直接扫描注册bean，因为该方法优先于其他bean的实例化之前执行，会导致无法注入相关的bean（clientProperties）
+     * 注册bean
      * @param beanFactory
      * @throws BeansException
      */
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        final RpcInvocationHandler rpcInvocationHandler = new RpcInvocationHandler();
+        //实例相关bean
+        SyncFutureMgr syncFutureMgr = new SyncFutureMgr();
+        syncFutureMgr.setRequestTimeout(environment);
+        MessageHandler messageHandler = new MessageHandler(syncFutureMgr);
+        NettyService nettyService = new NettyService(messageHandler);
+        RpcInvocationHandler rpcInvocationHandler = new RpcInvocationHandler(syncFutureMgr, nettyService);
+        //注册bean
+        beanFactory.registerSingleton(SyncFutureMgr.class.getName(),syncFutureMgr);
+        beanFactory.registerSingleton(NettyService.class.getName(),nettyService);
+
         log.info("注册service bean开始");
         String basePackage = environment.getProperty("rpc.base-package");
         if(!"".equals(basePackage)){
@@ -60,6 +71,5 @@ public class BeanRegister implements BeanDefinitionRegistryPostProcessor, Enviro
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
-        SyncFutureMgr.setRequestTimeout(environment);
     }
 }

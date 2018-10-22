@@ -18,6 +18,14 @@ import java.util.UUID;
  */
 public class RpcInvocationHandler implements InvocationHandler{
 
+    private SyncFutureMgr syncFutureMgr;
+    private NettyService nettyService;
+
+    public RpcInvocationHandler(SyncFutureMgr syncFutureMgr, NettyService nettyService) {
+        this.syncFutureMgr = syncFutureMgr;
+        this.nettyService = nettyService;
+    }
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (Object.class.equals(method.getDeclaringClass())) {
@@ -30,10 +38,10 @@ public class RpcInvocationHandler implements InvocationHandler{
         rpcRequest.setParameters(args);
         rpcRequest.setParameterTypes(method.getParameterTypes());
         rpcRequest.setRequestTime(System.currentTimeMillis());
-        NettyService.sendAndFlush(rpcRequest);
+        nettyService.sendAndFlush(rpcRequest);
         //保存请求
         SyncResFuture future = new SyncResFuture(rpcRequest);
-        SyncFutureMgr.put(rpcRequest.getRequestId(), future);
+        syncFutureMgr.put(rpcRequest.getRequestId(), future);
         //返回数据
         return future.getResponse().getData();
     }

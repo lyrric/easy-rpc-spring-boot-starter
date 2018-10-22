@@ -18,10 +18,6 @@ public class DefaultRpcCache implements RpcCache{
 
     private ConcurrentHashMap<String, Object> dataMap = new ConcurrentHashMap<>();
 
-    public DefaultRpcCache() {
-        System.out.println("DefaultRpcCache init");
-    }
-
     @Override
     public Object getObject(String key) {
         return check(key);

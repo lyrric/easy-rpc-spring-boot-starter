@@ -25,6 +25,8 @@ public class RpcClientConfiguration {
 
     @Resource
     private RpcClientProperties rpcClientProperties;
+    @Resource
+    private NettyService nettyService;
     /**
      * 初始化netty
      * @return
@@ -32,7 +34,7 @@ public class RpcClientConfiguration {
      */
     @PostConstruct
     public void initNetty() throws InterruptedException {
-        NettyService.init(rpcClientProperties);
+        nettyService.init(rpcClientProperties);
     }
 
 }

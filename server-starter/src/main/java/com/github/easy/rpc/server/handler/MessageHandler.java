@@ -45,10 +45,10 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         super.channelRead(ctx, msg);
         RpcRequest rpcRequest = (RpcRequest)msg;
-        if(new Random().nextBoolean()){
+/*        if(new Random().nextBoolean()){
             log.info(rpcRequest.getRequestId()+", 被抛弃");
             return ;
-        }
+        }*/
         RpcResponse rpcResponse = handle(rpcRequest);
         if(rpcResponse != null){
             //缓存起来

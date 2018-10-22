@@ -25,13 +25,18 @@ import lombok.extern.apachecommons.CommonsLog;
 public class NettyService {
 
     private static SocketChannel socketChannel;
+    private MessageHandler messageHandler;
+
+    public NettyService(MessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
+    }
 
     /**
      * 初始化
      * @param rpcClientProperties
      * @throws InterruptedException
      */
-    public static void init(RpcClientProperties rpcClientProperties) throws InterruptedException {
+    public void init(RpcClientProperties rpcClientProperties) throws InterruptedException {
         EventLoopGroup worker = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(worker)
@@ -41,7 +46,7 @@ public class NettyService {
                     protected void initChannel(SocketChannel socketChannel)  {
                         socketChannel.pipeline().addLast(new MsgEncoder());
                         socketChannel.pipeline().addLast(new MsgDecoder());
-                        socketChannel.pipeline().addLast(new MessageHandler());
+                        socketChannel.pipeline().addLast(messageHandler);
                     }
                 })
                 .option(ChannelOption.SO_KEEPALIVE, true);
@@ -56,7 +61,7 @@ public class NettyService {
      * @param rpcRequest
      * @return
      */
-    public static void sendAndFlush(RpcRequest rpcRequest){
+    public void sendAndFlush(RpcRequest rpcRequest){
         log.info("发送消息||"+rpcRequest.getRequestId()+"||"+rpcRequest.getClassName()+"||"+rpcRequest.getMethodName());
         socketChannel.writeAndFlush(rpcRequest);
     }
