@@ -31,13 +31,13 @@ public class RpcInvocationHandler implements InvocationHandler{
         if (Object.class.equals(method.getDeclaringClass())) {
             return method.invoke(this, args);
         }
-        RpcRequest rpcRequest = new RpcRequest();
-        rpcRequest.setRequestId(UUID.randomUUID().toString());
-        rpcRequest.setClassName(method.getDeclaringClass().getName());
-        rpcRequest.setMethodName(method.getName());
-        rpcRequest.setParameters(args);
-        rpcRequest.setParameterTypes(method.getParameterTypes());
-        rpcRequest.setRequestTime(System.currentTimeMillis());
+        String requestId = UUID.randomUUID().toString();
+        RpcRequest rpcRequest = new RpcRequest(requestId,
+                method.getDeclaringClass().getName(),
+                method.getName(),
+                method.getParameterTypes(),
+                args,
+                System.currentTimeMillis());
         nettyService.sendAndFlush(rpcRequest);
         //保存请求
         SyncResFuture future = new SyncResFuture(rpcRequest);

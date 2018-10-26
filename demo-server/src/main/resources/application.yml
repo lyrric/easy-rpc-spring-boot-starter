@@ -5,3 +5,7 @@ rpc:
     response-cache-expiry: 60
 server:
   port: 8080
+logging:
+  level:
+    org.springframework.web : debug
+  file: d:/test.txt

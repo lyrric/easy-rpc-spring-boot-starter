@@ -35,4 +35,16 @@ public class RpcRequest implements Serializable {
      * 请求时间
      */
     private Long requestTime;
+
+    public RpcRequest() {
+    }
+
+    public RpcRequest(String requestId, String className, String methodName, Class<?>[] parameterTypes, Object[] parameters, Long requestTime) {
+        this.requestId = requestId;
+        this.className = className;
+        this.methodName = methodName;
+        this.parameterTypes = parameterTypes;
+        this.parameters = parameters;
+        this.requestTime = requestTime;
+    }
 }
