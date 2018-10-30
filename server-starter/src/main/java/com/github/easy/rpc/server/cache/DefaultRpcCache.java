@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author wangxiaodong
  */
 @CommonsLog
+@Deprecated
 public class DefaultRpcCache implements RpcCache{
 
     private Integer expiry = null;

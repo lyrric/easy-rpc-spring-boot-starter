@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
  * 缓存Rpc返回信息
  * @author wangxiaodong
  */
+@Deprecated
 public interface RpcCache {
 
     /**

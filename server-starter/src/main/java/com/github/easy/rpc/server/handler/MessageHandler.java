@@ -3,7 +3,6 @@ package com.github.easy.rpc.server.handler;
 import com.github.easy.rpc.common.model.RpcRequest;
 import com.github.easy.rpc.common.model.RpcResponse;
 import com.github.easy.rpc.server.annotation.RpcService;
-import com.github.easy.rpc.server.cache.RpcCache;
 import com.github.easy.rpc.server.model.RpcServerProperties;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,7 +15,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Random;
 
 /**
  * Created on 2018/10/13.
@@ -30,8 +28,8 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
 
     @Resource
     private WebApplicationContext applicationContext;
-    @Resource
-    private RpcCache rpcCache;
+//    @Resource
+//    private RpcCache rpcCache;
     @Resource
     private RpcServerProperties rpcServerProperties;
 
@@ -45,14 +43,10 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         super.channelRead(ctx, msg);
         RpcRequest rpcRequest = (RpcRequest)msg;
-/*        if(new Random().nextBoolean()){
-            log.info(rpcRequest.getRequestId()+", 被抛弃");
-            return ;
-        }*/
         RpcResponse rpcResponse = handle(rpcRequest);
         if(rpcResponse != null){
             //缓存起来
-            rpcCache.putObject(rpcRequest.getRequestId(), rpcResponse,rpcServerProperties.getResponseCacheExpiry());
+            //rpcCache.putObject(rpcRequest.getRequestId(), rpcResponse,rpcServerProperties.getResponseCacheExpiry());
             ctx.channel().writeAndFlush(rpcResponse);
         }
 
@@ -81,9 +75,9 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
             return new RpcResponse(rpcRequest.getRequestId(), false, "请求超时", null);
         }
         //如果请求已经被执行过了，且缓存还在，则返回缓存中的数据
-        if((rpcResponse = (RpcResponse)rpcCache.getObject(rpcRequest.getRequestId())) != null){
-            return rpcResponse;
-        }
+//        if((rpcResponse = (RpcResponse)rpcCache.getObject(rpcRequest.getRequestId())) != null){
+//            return rpcResponse;
+//        }
         String clazzName = rpcRequest.getClassName();
         String methodName =rpcRequest.getMethodName();
         try {
