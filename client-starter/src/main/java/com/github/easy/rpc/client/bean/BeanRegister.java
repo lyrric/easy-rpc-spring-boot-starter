@@ -44,8 +44,7 @@ public class BeanRegister implements BeanDefinitionRegistryPostProcessor, Enviro
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         //实例相关bean
-        SyncFutureMgr syncFutureMgr = new SyncFutureMgr();
-        syncFutureMgr.setRequestTimeout(environment);
+        SyncFutureMgr syncFutureMgr = new SyncFutureMgr(environment);
         MessageHandler messageHandler = new MessageHandler(syncFutureMgr);
         NettyService nettyService = new NettyService(messageHandler);
         RpcInvocationHandler rpcInvocationHandler = new RpcInvocationHandler(syncFutureMgr, nettyService);

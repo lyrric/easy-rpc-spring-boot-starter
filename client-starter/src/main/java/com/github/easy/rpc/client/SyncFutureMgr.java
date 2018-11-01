@@ -19,6 +19,14 @@ public class SyncFutureMgr {
      * 超时时间
      */
     private Integer requestTimeout = 30;
+
+    public SyncFutureMgr(Environment environment) {
+        String str = environment.getProperty("rpc.request-timeout");
+        if(!"".equals(str)){
+            requestTimeout = Integer.valueOf(str);
+        }
+    }
+
     private ConcurrentHashMap<String, SyncResFuture> dataMap = new ConcurrentHashMap<>();
 
     /**
@@ -60,10 +68,4 @@ public class SyncFutureMgr {
         });
     }
 
-    public void setRequestTimeout(Environment environment) {
-        String str = environment.getProperty("rpc.request-timeout");
-        if("".equals(str)){
-            requestTimeout = Integer.valueOf(str);
-        }
-    }
 }
