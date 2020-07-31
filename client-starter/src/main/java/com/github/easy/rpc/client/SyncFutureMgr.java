@@ -4,6 +4,7 @@ import com.github.easy.rpc.client.model.SyncResFuture;
 import com.github.easy.rpc.common.model.RpcResponse;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,7 +23,7 @@ public class SyncFutureMgr {
 
     public SyncFutureMgr(Environment environment) {
         String str = environment.getProperty("rpc.request-timeout");
-        if(!"".equals(str)){
+        if(!StringUtils.isEmpty(str)){
             requestTimeout = Integer.valueOf(str);
         }
     }

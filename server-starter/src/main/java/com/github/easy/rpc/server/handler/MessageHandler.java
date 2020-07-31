@@ -28,8 +28,6 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
 
     @Resource
     private WebApplicationContext applicationContext;
-//    @Resource
-//    private RpcCache rpcCache;
     @Resource
     private RpcServerProperties rpcServerProperties;
 
@@ -44,12 +42,7 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
         super.channelRead(ctx, msg);
         RpcRequest rpcRequest = (RpcRequest)msg;
         RpcResponse rpcResponse = handle(rpcRequest);
-        if(rpcResponse != null){
-            //缓存起来
-            //rpcCache.putObject(rpcRequest.getRequestId(), rpcResponse,rpcServerProperties.getResponseCacheExpiry());
-            ctx.channel().writeAndFlush(rpcResponse);
-        }
-
+        ctx.channel().writeAndFlush(rpcResponse);
     }
 
     @Override
@@ -59,8 +52,8 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        //super.exceptionCaught(ctx, cause);
-        //cause.printStackTrace();
+        super.exceptionCaught(ctx, cause);
+        cause.printStackTrace();
         log.info("一个连接关闭了");
     }
 
@@ -69,15 +62,10 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
      * @param rpcRequest
      */
     private RpcResponse handle(RpcRequest rpcRequest){
-        RpcResponse rpcResponse;
         //请求时间据现在已经超过了有效期，返回null
         if(System.currentTimeMillis() > rpcRequest.getRequestTime()+rpcServerProperties.getRequestTimeout()*1000){
             return new RpcResponse(rpcRequest.getRequestId(), false, "请求超时", null);
         }
-        //如果请求已经被执行过了，且缓存还在，则返回缓存中的数据
-//        if((rpcResponse = (RpcResponse)rpcCache.getObject(rpcRequest.getRequestId())) != null){
-//            return rpcResponse;
-//        }
         String clazzName = rpcRequest.getClassName();
         String methodName =rpcRequest.getMethodName();
         try {

@@ -18,21 +18,4 @@ import javax.annotation.Resource;
 @ComponentScan(basePackages = "com.github.easy.rpc.server")
 @EnableScheduling
 public class ServerRpcConfiguration {
-
-    @Resource
-    private RpcServerProperties rpcServerProperties;
-
-//    /**
-//     * 注册RpcCache
-//     * @return
-//     * @throws ClassNotFoundException
-//     * @throws IllegalAccessException
-//     * @throws InstantiationException
-//     */
-//    @Bean
-//    public RpcCache rpcCache() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-//        String className = rpcServerProperties.getCacheClassName();
-//        Class clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
-//        return (RpcCache) clazz.newInstance();
-//    }
 }
